@@ -49,10 +49,21 @@ export default function SettingsPage() {
     if (data) {
       setShareEnabled(true);
       setShareToken(data);
-      if (data.partner_id) {
-        const { data: p } = await supabase.from("profiles").select("full_name").eq("id", data.partner_id).single();
-        setPartnerInfo({ ...p, accepted_at: data.accepted_at });
-      }
+    }
+
+    // Load all partners
+    const { data: accessRows } = await supabase
+      .from("partner_access")
+      .select("partner_id")
+      .eq("owner_id", user.id)
+      .eq("is_active", true);
+    if (accessRows && accessRows.length > 0) {
+      const ids = accessRows.map((r) => r.partner_id);
+      const { data: profiles } = await supabase
+        .from("profiles")
+        .select("id, full_name")
+        .in("id", ids);
+      setPartners(profiles || []);
     }
   };
 
