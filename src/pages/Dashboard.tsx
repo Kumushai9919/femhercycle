@@ -5,6 +5,7 @@ import MobileLayout from "@/components/MobileLayout";
 import { OwnerBottomNav } from "@/components/BottomNav";
 import PhaseChip from "@/components/PhaseChip";
 import AiBadge from "@/components/AiBadge";
+import lunaMascot from "@/assets/luna-mascot.png";
 import { getPhaseInfo, getNextPeriodDate, type Phase } from "@/lib/cycle";
 import { seedDataIfNeeded } from "@/lib/seed";
 import { format } from "date-fns";
@@ -130,8 +131,16 @@ export default function Dashboard() {
           </div>
         </div>
 
-
-        
+        {/* Luna intro card */}
+        <div className="px-5 mt-4">
+          <div className="rounded-2xl bg-gradient-to-r from-primary/8 to-accent/8 border border-primary/15 p-4 flex items-center gap-3">
+            <img src={lunaMascot} alt="루나" className="w-11 h-11 shrink-0" />
+            <div>
+              <p className="text-sm font-body font-semibold text-foreground">루나 AI와 대화하세요</p>
+              <p className="text-xs text-muted-foreground font-body mt-0.5">나만의 건강 어시스턴트가 궁금한 걸 답해드려요 →</p>
+            </div>
+          </div>
+        </div>
       </div>
       <OwnerBottomNav />
     </MobileLayout>
