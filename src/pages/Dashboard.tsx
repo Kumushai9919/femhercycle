@@ -23,7 +23,7 @@ export default function Dashboard() {
   const [settings, setSettings] = useState<CycleSettings | null>(null);
   const [todayLog, setTodayLog] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [chatOpen, setChatOpen] = useState(false);
+  
   useEffect(() => {
     if (!user) return;
     (async () => {
