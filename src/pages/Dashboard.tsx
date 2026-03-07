@@ -45,6 +45,17 @@ export default function Dashboard() {
         .eq("log_date", today)
         .maybeSingle();
       setTodayLog(log);
+
+      // Fetch last 7 days logs
+      const weekAgo = format(subDays(new Date(), 6), "yyyy-MM-dd");
+      const { data: wLogs } = await supabase
+        .from("cycle_logs")
+        .select("log_date, energy_level, mood")
+        .eq("user_id", user.id)
+        .gte("log_date", weekAgo)
+        .order("log_date");
+      setWeekLogs(wLogs || []);
+
       setLoading(false);
     })();
   }, [user]);
