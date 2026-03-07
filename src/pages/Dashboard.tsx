@@ -71,7 +71,7 @@ export default function Dashboard() {
     <MobileLayout>
       <div className="pb-24">
         {/* Hero */}
-        <div className="bg-gradient-to-br from-blush via-rose to-lavender px-6 pt-12 pb-8 rounded-b-[2rem]">
+        <div className="bg-gradient-to-br from-lavender via-blush to-secondary px-6 pt-12 pb-8 rounded-b-[2rem]">
           <p className="text-sm font-body text-charcoal/70">
             {format(new Date(), "M월 d일 EEEE", { locale: ko })}
           </p>

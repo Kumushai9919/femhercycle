@@ -4,45 +4,45 @@
 
 @layer base {
   :root {
-    --background: 30 33% 97%;
-    --foreground: 330 18% 18%;
+    --background: 0 0% 100%;
+    --foreground: 240 10% 10%;
 
     --card: 0 0% 100%;
-    --card-foreground: 330 18% 18%;
+    --card-foreground: 240 10% 10%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 330 18% 18%;
+    --popover-foreground: 240 10% 10%;
 
-    --primary: 330 18% 48%;
-    --primary-foreground: 30 33% 97%;
+    --primary: 280 60% 55%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 270 30% 84%;
-    --secondary-foreground: 330 18% 18%;
+    --secondary: 300 30% 94%;
+    --secondary-foreground: 280 40% 30%;
 
-    --muted: 280 33% 96%;
-    --muted-foreground: 330 10% 40%;
+    --muted: 260 20% 96%;
+    --muted-foreground: 240 5% 46%;
 
-    --accent: 340 50% 70%;
+    --accent: 330 65% 60%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 330 15% 88%;
-    --input: 330 15% 88%;
-    --ring: 330 18% 48%;
+    --border: 240 6% 90%;
+    --input: 240 6% 90%;
+    --ring: 280 60% 55%;
 
-    --radius: 1.125rem;
+    --radius: 0.875rem;
 
     /* HerCycle custom */
-    --blush: 346 65% 85%;
-    --rose: 346 55% 77%;
-    --deep-rose: 340 42% 62%;
-    --plum: 320 18% 48%;
-    --lavender: 270 30% 84%;
-    --mist: 280 33% 96%;
-    --cream: 30 33% 97%;
-    --charcoal: 330 18% 18%;
+    --blush: 320 40% 94%;
+    --rose: 330 55% 75%;
+    --deep-rose: 330 50% 58%;
+    --plum: 280 45% 50%;
+    --lavender: 270 40% 90%;
+    --mist: 260 25% 97%;
+    --cream: 0 0% 100%;
+    --charcoal: 240 10% 10%;
 
     /* Phase colors */
     --phase-menstruation: 0 73% 90%;
@@ -65,25 +65,25 @@
   }
 
   .dark {
-    --background: 330 18% 8%;
-    --foreground: 30 33% 97%;
-    --card: 330 18% 12%;
-    --card-foreground: 30 33% 97%;
-    --popover: 330 18% 12%;
-    --popover-foreground: 30 33% 97%;
-    --primary: 340 50% 70%;
-    --primary-foreground: 330 18% 8%;
-    --secondary: 270 20% 25%;
-    --secondary-foreground: 30 33% 97%;
-    --muted: 330 15% 18%;
-    --muted-foreground: 330 10% 60%;
-    --accent: 340 42% 62%;
+    --background: 240 10% 6%;
+    --foreground: 0 0% 96%;
+    --card: 240 10% 10%;
+    --card-foreground: 0 0% 96%;
+    --popover: 240 10% 10%;
+    --popover-foreground: 0 0% 96%;
+    --primary: 280 60% 60%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 280 20% 20%;
+    --secondary-foreground: 0 0% 96%;
+    --muted: 240 10% 15%;
+    --muted-foreground: 240 5% 55%;
+    --accent: 330 55% 55%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 100%;
-    --border: 330 15% 22%;
-    --input: 330 15% 22%;
-    --ring: 340 50% 70%;
+    --border: 240 10% 18%;
+    --input: 240 10% 18%;
+    --ring: 280 60% 60%;
   }
 }
 
