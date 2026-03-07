@@ -6,6 +6,7 @@ import { OwnerBottomNav } from "@/components/BottomNav";
 import PhaseChip from "@/components/PhaseChip";
 import AiBadge from "@/components/AiBadge";
 import lunaMascot from "@/assets/luna-mascot.png";
+import AiChatDialog from "@/components/AiChatDialog";
 import { getPhaseInfo, getNextPeriodDate, type Phase } from "@/lib/cycle";
 import { seedDataIfNeeded } from "@/lib/seed";
 import { format, subDays } from "date-fns";
@@ -24,6 +25,7 @@ export default function Dashboard() {
   const [settings, setSettings] = useState<CycleSettings | null>(null);
   const [todayLog, setTodayLog] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [chatOpen, setChatOpen] = useState(false);
   const [weekLogs, setWeekLogs] = useState<any[]>([]);
   
   useEffect(() => {
@@ -168,14 +170,18 @@ export default function Dashboard() {
 
         {/* Luna intro card */}
         <div className="px-5 mt-4">
-          <div className="rounded-2xl bg-gradient-to-r from-primary/8 to-accent/8 border border-primary/15 p-4 flex items-center gap-3">
+          <button
+            onClick={() => setChatOpen(true)}
+            className="w-full rounded-2xl bg-gradient-to-r from-primary/8 to-accent/8 border border-primary/15 p-4 flex items-center gap-3 hover:shadow-md transition-all active:scale-[0.98] text-left"
+          >
             <img src={lunaMascot} alt="루나" className="w-11 h-11 shrink-0" />
             <div>
               <p className="text-sm font-body font-semibold text-foreground">루나 AI와 대화하세요</p>
               <p className="text-xs text-muted-foreground font-body mt-0.5">나만의 건강 어시스턴트가 궁금한 걸 답해드려요 →</p>
             </div>
-          </div>
+          </button>
         </div>
+        <AiChatDialog open={chatOpen} onOpenChange={setChatOpen} />
       </div>
       <OwnerBottomNav />
     </MobileLayout>
