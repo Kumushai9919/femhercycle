@@ -108,20 +108,41 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* AI Insight placeholder */}
+        {/* AI Insight - Featured */}
         <div className="px-5 mt-5">
-          <div className="rounded-2xl bg-card p-5 shadow-soft">
-            <div className="flex items-center gap-2 mb-2">
-              <AiBadge />
-              <span className="text-sm font-body font-medium text-foreground">오늘의 인사이트</span>
+          <div className="rounded-2xl bg-gradient-to-br from-primary/10 via-accent/5 to-lavender/30 border border-primary/15 p-5 shadow-soft">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="flex items-center gap-1.5 bg-primary rounded-full px-3 py-1">
+                <Sparkles className="h-3.5 w-3.5 text-primary-foreground" />
+                <span className="text-[11px] font-medium text-primary-foreground font-body">AI 분석</span>
+              </div>
+              <span className="text-sm font-display font-bold text-foreground">오늘의 인사이트</span>
             </div>
-            <p className="text-sm text-muted-foreground font-body leading-relaxed">
-              현재 {phaseInfo.label}에 있어요. 이 시기에는{" "}
+            <p className="text-sm text-foreground font-body leading-relaxed">
+              현재 <span className="font-semibold text-primary">{phaseInfo.label}</span>에 있어요. 이 시기에는{" "}
               {phaseInfo.phase === "menstruation" && "충분한 휴식과 따뜻한 음식이 중요해요. 무리하지 마세요."}
               {phaseInfo.phase === "follicular" && "에너지가 올라가는 시기예요! 새로운 활동을 시작하기 좋아요."}
               {phaseInfo.phase === "ovulation" && "가장 활기찬 시기예요. 사교 활동과 운동에 적극적으로 참여해 보세요."}
               {phaseInfo.phase === "luteal" && "몸이 편안함을 원하는 시기예요. 스트레스 관리에 신경 쓰세요."}
             </p>
+
+            {/* Weekly Energy Chart */}
+            <div className="mt-4 pt-4 border-t border-primary/10">
+              <p className="text-xs font-body font-semibold text-muted-foreground mb-2">📊 이번 주 에너지 추이</p>
+              <div className="h-28">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={getWeekChartData(weekLogs)} barSize={18}>
+                    <XAxis dataKey="day" tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} axisLine={false} tickLine={false} />
+                    <YAxis hide domain={[0, 100]} />
+                    <Tooltip
+                      contentStyle={{ borderRadius: 12, fontSize: 12, border: "1px solid hsl(var(--border))" }}
+                      formatter={(v: number) => [`${v}%`, "에너지"]}
+                    />
+                    <Bar dataKey="energy" radius={[6, 6, 0, 0]} fill="hsl(var(--primary))" opacity={0.8} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
           </div>
         </div>
 
