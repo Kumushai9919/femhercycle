@@ -18,7 +18,7 @@ export default function SettingsPage() {
   // Sharing state
   const [shareEnabled, setShareEnabled] = useState(false);
   const [shareToken, setShareToken] = useState<any>(null);
-  const [partnerInfo, setPartnerInfo] = useState<any>(null);
+  const [partners, setPartners] = useState<{ full_name: string; id: string }[]>([]);
 
   useEffect(() => {
     if (!user) return;
