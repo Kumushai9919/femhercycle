@@ -7,7 +7,7 @@ export default function LunaFab() {
 
   return (
     <>
-      <div className="fixed bottom-24 z-50 flex justify-end pointer-events-none" style={{ left: '50%', transform: 'translateX(-50%)', width: '100%', maxWidth: '430px', paddingRight: '1rem' }}>
+      <div className="fixed bottom-24 z-50 flex justify-end pointer-events-none" style={{ left: '50%', transform: 'translateX(-50%)', width: '100%', maxWidth: '430px', paddingRight: '0.25rem' }}>
         <button
           onClick={() => setOpen(true)}
           className="pointer-events-auto w-24 h-24 rounded-full flex items-center justify-center hover:scale-110 active:scale-95 transition-transform"
