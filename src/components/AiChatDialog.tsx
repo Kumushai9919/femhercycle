@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Send, X } from "lucide-react";
+import { Send } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import lunaMascot from "@/assets/luna-mascot.png";
 
