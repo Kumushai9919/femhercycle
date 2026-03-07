@@ -24,6 +24,7 @@ export default function Dashboard() {
   const [settings, setSettings] = useState<CycleSettings | null>(null);
   const [todayLog, setTodayLog] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [weekLogs, setWeekLogs] = useState<any[]>([]);
   
   useEffect(() => {
     if (!user) return;
