@@ -1,9 +1,13 @@
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
 import AiChatDialog from "@/components/AiChatDialog";
 import lunaMascot from "@/assets/luna-mascot.png";
 
 export default function LunaFab() {
   const [open, setOpen] = useState(false);
+  const location = useLocation();
+
+  if (location.pathname === "/settings") return null;
 
   return (
     <>
