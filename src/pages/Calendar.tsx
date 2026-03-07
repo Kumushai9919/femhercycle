@@ -4,13 +4,20 @@ import { supabase } from "@/integrations/supabase/client";
 import MobileLayout from "@/components/MobileLayout";
 import { OwnerBottomNav } from "@/components/BottomNav";
 import PhaseChip from "@/components/PhaseChip";
-import { getPhaseInfo, getPhaseColor, PHASE_LABELS, PHASE_EMOJI, type Phase } from "@/lib/cycle";
+import { getPhaseInfo, getPhaseColor, getNextPeriodDate, type Phase } from "@/lib/cycle";
 import {
   format, startOfMonth, endOfMonth, startOfWeek, endOfWeek,
   addDays, addMonths, subMonths, isSameDay, isSameMonth, isToday,
+  differenceInDays,
 } from "date-fns";
 import { ko } from "date-fns/locale";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  Popover, PopoverContent, PopoverTrigger,
+} from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { cn } from "@/lib/utils";
+import lunaMascot from "@/assets/luna-mascot.png";
 
 export default function CalendarPage() {
   const { user } = useAuth();
@@ -47,10 +54,7 @@ export default function CalendarPage() {
 
   const days: Date[] = [];
   let d = calStart;
-  while (d <= calEnd) {
-    days.push(d);
-    d = addDays(d, 1);
-  }
+  while (d <= calEnd) { days.push(d); d = addDays(d, 1); }
 
   const selectedPhase = selectedDay
     ? getPhaseInfo(selectedDay, lastPeriod, settings.cycle_length, settings.period_length)
@@ -58,24 +62,45 @@ export default function CalendarPage() {
 
   const phases: Phase[] = ["menstruation", "follicular", "ovulation", "luteal"];
 
+  // Next period prediction
+  const nextPeriod = getNextPeriodDate(lastPeriod, settings.cycle_length);
+  const daysUntil = differenceInDays(nextPeriod, new Date());
+
   return (
     <MobileLayout>
       <div className="pb-24 px-5 pt-8">
         {/* Phase legend */}
         <div className="flex gap-2 flex-wrap mb-4">
-          {phases.map((p) => (
-            <PhaseChip key={p} phase={p} size="sm" />
-          ))}
+          {phases.map((p) => <PhaseChip key={p} phase={p} size="sm" />)}
         </div>
 
-        {/* Month nav */}
+        {/* Month nav with date picker */}
         <div className="flex items-center justify-between mb-4">
           <button onClick={() => setCurrentMonth(subMonths(currentMonth, 1))} className="p-1 rounded-full hover:bg-mist">
             <ChevronLeft className="h-5 w-5 text-foreground" />
           </button>
-          <h2 className="text-lg font-display font-bold text-foreground">
-            {format(currentMonth, "yyyy년 M월", { locale: ko })}
-          </h2>
+
+          <Popover>
+            <PopoverTrigger asChild>
+              <button className="text-lg font-display font-bold text-foreground hover:text-primary transition-colors px-3 py-1 rounded-lg hover:bg-muted">
+                {format(currentMonth, "yyyy년 M월", { locale: ko })}
+              </button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="center">
+              <Calendar
+                mode="single"
+                selected={currentMonth}
+                onSelect={(date) => {
+                  if (date) {
+                    setCurrentMonth(date);
+                  }
+                }}
+                defaultMonth={currentMonth}
+                className={cn("p-3 pointer-events-auto")}
+              />
+            </PopoverContent>
+          </Popover>
+
           <button onClick={() => setCurrentMonth(addMonths(currentMonth, 1))} className="p-1 rounded-full hover:bg-mist">
             <ChevronRight className="h-5 w-5 text-foreground" />
           </button>
@@ -92,7 +117,7 @@ export default function CalendarPage() {
         <div className="grid grid-cols-7 gap-1">
           {days.map((day, idx) => {
             const inMonth = isSameMonth(day, currentMonth);
-            const today = isToday(day);
+            const todayFlag = isToday(day);
             const info = getPhaseInfo(day, lastPeriod, settings.cycle_length, settings.period_length);
             const colors = getPhaseColor(info.phase);
             const selected = selectedDay && isSameDay(day, selectedDay);
@@ -104,7 +129,7 @@ export default function CalendarPage() {
                 className={`aspect-square flex items-center justify-center rounded-xl text-sm font-body transition-all
                   ${inMonth ? colors.bg : "bg-transparent"}
                   ${inMonth ? colors.text : "text-muted-foreground/30"}
-                  ${today ? "ring-2 ring-primary ring-offset-1" : ""}
+                  ${todayFlag ? "ring-2 ring-primary ring-offset-1" : ""}
                   ${selected ? "ring-2 ring-foreground" : ""}
                 `}
               >
@@ -133,6 +158,22 @@ export default function CalendarPage() {
             </div>
           </div>
         )}
+
+        {/* AI Prediction Card */}
+        <div className="mt-5 rounded-2xl bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20 p-4 flex items-start gap-3">
+          <img src={lunaMascot} alt="루나" className="w-10 h-10 shrink-0 mt-0.5" />
+          <div>
+            <p className="text-sm font-display font-bold text-foreground">다음 생리 예측</p>
+            <p className="text-sm text-muted-foreground font-body mt-1">
+              예상일은 <span className="font-semibold text-primary">{format(nextPeriod, "M월 d일 (EEEE)", { locale: ko })}</span>이에요.
+              {daysUntil > 0
+                ? ` 약 ${daysUntil}일 남았어요 🌙`
+                : daysUntil === 0
+                ? " 오늘이 예상일이에요! 💜"
+                : " 예상일이 지났어요. 기록을 업데이트해 주세요."}
+            </p>
+          </div>
+        </div>
       </div>
       <OwnerBottomNav />
     </MobileLayout>
