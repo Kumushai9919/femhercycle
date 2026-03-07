@@ -98,13 +98,18 @@ export default function SettingsPage() {
     toast.success("복사되었어요!");
   };
 
-  const removePartner = async () => {
-    if (!user || !shareToken) return;
-    await supabase.from("partner_access").update({ is_active: false }).eq("owner_id", user.id);
-    await supabase.from("share_tokens").update({ is_active: false, partner_id: null }).eq("owner_id", user.id);
-    setPartnerInfo(null);
-    setShareToken(null);
-    setShareEnabled(false);
+  const removePartner = async (partnerId?: string) => {
+    if (!user) return;
+    if (partnerId) {
+      await supabase.from("partner_access").update({ is_active: false }).eq("owner_id", user.id).eq("partner_id", partnerId);
+      setPartners((prev) => prev.filter((p) => p.id !== partnerId));
+    } else {
+      await supabase.from("partner_access").update({ is_active: false }).eq("owner_id", user.id);
+      await supabase.from("share_tokens").update({ is_active: false, partner_id: null }).eq("owner_id", user.id);
+      setPartners([]);
+      setShareToken(null);
+      setShareEnabled(false);
+    }
     toast.success("파트너 연결이 해제되었어요.");
   };
 
