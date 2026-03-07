@@ -5,10 +5,13 @@ import MobileLayout from "@/components/MobileLayout";
 import { OwnerBottomNav } from "@/components/BottomNav";
 import PhaseChip from "@/components/PhaseChip";
 import AiBadge from "@/components/AiBadge";
+import AiChatDialog from "@/components/AiChatDialog";
 import { getPhaseInfo, getNextPeriodDate, type Phase } from "@/lib/cycle";
 import { seedDataIfNeeded } from "@/lib/seed";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
+import { MessageCircle } from "lucide-react";
+import lunaMascot from "@/assets/luna-mascot.png";
 
 interface CycleSettings {
   cycle_length: number;
@@ -21,7 +24,7 @@ export default function Dashboard() {
   const [settings, setSettings] = useState<CycleSettings | null>(null);
   const [todayLog, setTodayLog] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-
+  const [chatOpen, setChatOpen] = useState(false);
   useEffect(() => {
     if (!user) return;
     (async () => {
@@ -129,6 +132,23 @@ export default function Dashboard() {
             ))}
           </div>
         </div>
+
+        {/* AI Chat Entry Card */}
+        <div className="px-5 mt-4">
+          <button
+            onClick={() => setChatOpen(true)}
+            className="w-full rounded-2xl bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20 p-4 flex items-center gap-3 hover:shadow-md transition-all active:scale-[0.98]"
+          >
+            <img src={lunaMascot} alt="루나" className="w-12 h-12 shrink-0" />
+            <div className="flex-1 text-left">
+              <p className="text-sm font-display font-bold text-foreground">루나에게 물어보세요</p>
+              <p className="text-xs text-muted-foreground font-body mt-0.5">생리 주기, 건강, 증상 등 무엇이든 💬</p>
+            </div>
+            <MessageCircle className="h-5 w-5 text-primary shrink-0" />
+          </button>
+        </div>
+
+        <AiChatDialog open={chatOpen} onOpenChange={setChatOpen} />
       </div>
       <OwnerBottomNav />
     </MobileLayout>
