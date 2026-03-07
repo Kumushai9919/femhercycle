@@ -59,6 +59,21 @@ export default function Dashboard() {
         .order("log_date");
       setWeekLogs(wLogs || []);
 
+      // Fetch linked partners
+      const { data: accessRows } = await supabase
+        .from("partner_access")
+        .select("partner_id")
+        .eq("owner_id", user.id)
+        .eq("is_active", true);
+      if (accessRows && accessRows.length > 0) {
+        const ids = accessRows.map((r) => r.partner_id);
+        const { data: pProfiles } = await supabase
+          .from("profiles")
+          .select("full_name")
+          .in("id", ids);
+        setPartners(pProfiles || []);
+      }
+
       setLoading(false);
     })();
   }, [user]);
