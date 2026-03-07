@@ -5,6 +5,7 @@ import MobileLayout from "@/components/MobileLayout";
 import { OwnerBottomNav } from "@/components/BottomNav";
 import PhaseChip from "@/components/PhaseChip";
 import AiBadge from "@/components/AiBadge";
+import lunaMascot from "@/assets/luna-mascot.png";
 import { getPhaseInfo, getNextPeriodDate, type Phase } from "@/lib/cycle";
 import { seedDataIfNeeded } from "@/lib/seed";
 import { format } from "date-fns";
