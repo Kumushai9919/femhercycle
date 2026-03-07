@@ -48,14 +48,9 @@ export default function InvitePage() {
       return;
     }
 
-    // Get owner name
-    const { data: ownerProfile } = await supabase
-      .from("profiles")
-      .select("full_name")
-      .eq("id", data.owner_id)
-      .single();
-
-    setOwnerName(ownerProfile?.full_name || "");
+    // Get owner name via public function (works without auth)
+    const { data: name } = await supabase.rpc("get_invite_owner_name", { _token: token! });
+    setOwnerName(name || "");
     setTokenData(data);
     setState("valid");
   };
