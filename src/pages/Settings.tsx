@@ -176,12 +176,7 @@ export default function SettingsPage() {
               {partnerInfo && (
                 <div className="rounded-2xl bg-mist p-3 flex items-center justify-between">
                   <span className="text-sm font-body text-foreground">
-                    👤 {partnerInfo.full_name || "파트너"} 연결됨
-                    {partnerInfo.accepted_at && (
-                      <span className="text-xs text-muted-foreground ml-1">
-                        · {format(new Date(partnerInfo.accepted_at), "M/d")}
-                      </span>
-                    )}
+                    💜 {partnerInfo.full_name || "파트너"} 연결됨
                   </span>
                   <button onClick={removePartner} className="p-1.5 rounded-lg text-destructive hover:bg-destructive/10">
                     <UserX className="h-4 w-4" />
