@@ -27,6 +27,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [chatOpen, setChatOpen] = useState(false);
   const [weekLogs, setWeekLogs] = useState<any[]>([]);
+  const [partners, setPartners] = useState<{ full_name: string }[]>([]);
   
   useEffect(() => {
     if (!user) return;
@@ -57,6 +58,21 @@ export default function Dashboard() {
         .gte("log_date", weekAgo)
         .order("log_date");
       setWeekLogs(wLogs || []);
+
+      // Fetch linked partners
+      const { data: accessRows } = await supabase
+        .from("partner_access")
+        .select("partner_id")
+        .eq("owner_id", user.id)
+        .eq("is_active", true);
+      if (accessRows && accessRows.length > 0) {
+        const ids = accessRows.map((r) => r.partner_id);
+        const { data: pProfiles } = await supabase
+          .from("profiles")
+          .select("full_name")
+          .in("id", ids);
+        setPartners(pProfiles || []);
+      }
 
       setLoading(false);
     })();
@@ -155,6 +171,20 @@ export default function Dashboard() {
           <StatCard label="오늘 에너지" value={todayLog?.energy_level != null ? `${todayLog.energy_level}%` : "—"} />
           <StatCard label="오늘 기분" value={moodEmoji} />
         </div>
+
+        {/* Partners */}
+        {partners.length > 0 && (
+          <div className="px-5 mt-4">
+            <h3 className="text-sm font-body font-semibold text-foreground mb-2">연결된 파트너</h3>
+            <div className="flex gap-2 flex-wrap">
+              {partners.map((p, i) => (
+                <span key={i} className="inline-flex items-center gap-1.5 rounded-full bg-lavender px-3 py-1.5 text-xs font-body font-medium text-primary">
+                  💜 {p.full_name || "파트너"}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Routine pills */}
         <div className="px-5 mt-4">
