@@ -64,22 +64,23 @@ export default function InvitePage() {
     if (!user || !tokenData) return;
     setState("accepting");
 
-    // Update profile to partner role
-    await supabase.from("profiles").update({ role: "partner" }).eq("id", user.id);
+    try {
+      const { data: ownerId, error } = await supabase.rpc("accept_invite", {
+        _token: token!,
+        _partner_id: user.id,
+      });
 
-    // Create partner access
-    await supabase.from("partner_access").upsert(
-      { owner_id: tokenData.owner_id, partner_id: user.id, token_id: tokenData.id },
-      { onConflict: "owner_id,partner_id" }
-    );
+      if (error) {
+        console.error("Accept invite error:", error);
+        setState("invalid");
+        return;
+      }
 
-    // Update share token
-    await supabase
-      .from("share_tokens")
-      .update({ partner_id: user.id, accepted_at: new Date().toISOString() })
-      .eq("id", tokenData.id);
-
-    navigate(`/partner/${tokenData.owner_id}`);
+      navigate(`/partner/${ownerId}`);
+    } catch (err) {
+      console.error("Accept invite failed:", err);
+      setState("invalid");
+    }
   };
 
   const handleSignIn = () => {
