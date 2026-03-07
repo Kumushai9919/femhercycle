@@ -9,8 +9,6 @@ import { getPhaseInfo, getNextPeriodDate, type Phase } from "@/lib/cycle";
 import { seedDataIfNeeded } from "@/lib/seed";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
-import { MessageCircle } from "lucide-react";
-import lunaMascot from "@/assets/luna-mascot.png";
 
 interface CycleSettings {
   cycle_length: number;
