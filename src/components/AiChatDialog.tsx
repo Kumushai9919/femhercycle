@@ -114,9 +114,6 @@ export default function AiChatDialog({
             <p className="text-sm font-display font-bold text-white">루나</p>
             <p className="text-[11px] text-white/80 font-body">생리 주기 AI 어시스턴트</p>
           </div>
-          <button onClick={() => onOpenChange(false)} className="text-white/70 hover:text-white">
-            <X className="h-5 w-5" />
-          </button>
         </div>
 
         {/* Messages */}
