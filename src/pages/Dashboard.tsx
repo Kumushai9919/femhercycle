@@ -147,7 +147,7 @@ export default function Dashboard() {
           </button>
         </div>
 
-        <AiChatDialog open={chatOpen} onOpenChange={setChatOpen} />
+        
       </div>
       <OwnerBottomNav />
     </MobileLayout>
