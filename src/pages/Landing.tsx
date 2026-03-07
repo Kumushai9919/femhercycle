@@ -44,8 +44,10 @@ export default function Landing() {
       <div className="flex min-h-screen flex-col items-center justify-center px-8 bg-gradient-to-b from-blush via-mist to-lavender">
         <div className="flex flex-col items-center gap-6 text-center">
           <span className="text-6xl">🌸</span>
-          <h1 className="text-5xl font-display font-bold text-charcoal tracking-tight">
-            HerCycle
+          <h1 className="text-5xl font-display font-semibold tracking-tight">
+            <span className="bg-gradient-to-r from-primary via-accent to-rose bg-clip-text text-transparent">
+              HerCycle
+            </span>
           </h1>
           <p className="text-lg font-body text-muted-foreground max-w-[280px]">
             나의 사이클을 이해하고,
