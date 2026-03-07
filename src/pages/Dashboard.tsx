@@ -172,6 +172,20 @@ export default function Dashboard() {
           <StatCard label="오늘 기분" value={moodEmoji} />
         </div>
 
+        {/* Partners */}
+        {partners.length > 0 && (
+          <div className="px-5 mt-4">
+            <h3 className="text-sm font-body font-semibold text-foreground mb-2">연결된 파트너</h3>
+            <div className="flex gap-2 flex-wrap">
+              {partners.map((p, i) => (
+                <span key={i} className="inline-flex items-center gap-1.5 rounded-full bg-lavender px-3 py-1.5 text-xs font-body font-medium text-primary">
+                  💜 {p.full_name || "파트너"}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Routine pills */}
         <div className="px-5 mt-4">
           <h3 className="text-sm font-body font-semibold text-foreground mb-2">오늘의 루틴</h3>
