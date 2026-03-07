@@ -27,6 +27,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [chatOpen, setChatOpen] = useState(false);
   const [weekLogs, setWeekLogs] = useState<any[]>([]);
+  const [partners, setPartners] = useState<{ full_name: string }[]>([]);
   
   useEffect(() => {
     if (!user) return;
