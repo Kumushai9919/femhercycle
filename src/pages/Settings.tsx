@@ -18,7 +18,7 @@ export default function SettingsPage() {
   // Sharing state
   const [shareEnabled, setShareEnabled] = useState(false);
   const [shareToken, setShareToken] = useState<any>(null);
-  const [partnerInfo, setPartnerInfo] = useState<any>(null);
+  const [partners, setPartners] = useState<{ full_name: string; id: string }[]>([]);
 
   useEffect(() => {
     if (!user) return;
@@ -49,10 +49,21 @@ export default function SettingsPage() {
     if (data) {
       setShareEnabled(true);
       setShareToken(data);
-      if (data.partner_id) {
-        const { data: p } = await supabase.from("profiles").select("full_name").eq("id", data.partner_id).single();
-        setPartnerInfo({ ...p, accepted_at: data.accepted_at });
-      }
+    }
+
+    // Load all partners
+    const { data: accessRows } = await supabase
+      .from("partner_access")
+      .select("partner_id")
+      .eq("owner_id", user.id)
+      .eq("is_active", true);
+    if (accessRows && accessRows.length > 0) {
+      const ids = accessRows.map((r) => r.partner_id);
+      const { data: profiles } = await supabase
+        .from("profiles")
+        .select("id, full_name")
+        .in("id", ids);
+      setPartners(profiles || []);
     }
   };
 
@@ -87,13 +98,18 @@ export default function SettingsPage() {
     toast.success("복사되었어요!");
   };
 
-  const removePartner = async () => {
-    if (!user || !shareToken) return;
-    await supabase.from("partner_access").update({ is_active: false }).eq("owner_id", user.id);
-    await supabase.from("share_tokens").update({ is_active: false, partner_id: null }).eq("owner_id", user.id);
-    setPartnerInfo(null);
-    setShareToken(null);
-    setShareEnabled(false);
+  const removePartner = async (partnerId?: string) => {
+    if (!user) return;
+    if (partnerId) {
+      await supabase.from("partner_access").update({ is_active: false }).eq("owner_id", user.id).eq("partner_id", partnerId);
+      setPartners((prev) => prev.filter((p) => p.id !== partnerId));
+    } else {
+      await supabase.from("partner_access").update({ is_active: false }).eq("owner_id", user.id);
+      await supabase.from("share_tokens").update({ is_active: false, partner_id: null }).eq("owner_id", user.id);
+      setPartners([]);
+      setShareToken(null);
+      setShareEnabled(false);
+    }
     toast.success("파트너 연결이 해제되었어요.");
   };
 
@@ -173,16 +189,16 @@ export default function SettingsPage() {
                 <RefreshCw className="h-3 w-3" /> 링크 재생성
               </button>
 
-              {partnerInfo && (
-                <div className="rounded-2xl bg-mist p-3 flex items-center justify-between">
+              {partners.map((p) => (
+                <div key={p.id} className="rounded-2xl bg-mist p-3 flex items-center justify-between">
                   <span className="text-sm font-body text-foreground">
-                    💜 {partnerInfo.full_name || "파트너"} 연결됨
+                    💜 {p.full_name || "파트너"} 연결됨
                   </span>
-                  <button onClick={removePartner} className="p-1.5 rounded-lg text-destructive hover:bg-destructive/10">
+                  <button onClick={() => removePartner(p.id)} className="p-1.5 rounded-lg text-destructive hover:bg-destructive/10">
                     <UserX className="h-4 w-4" />
                   </button>
                 </div>
-              )}
+              ))}
             </div>
           )}
         </Section>
