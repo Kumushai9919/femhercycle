@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 import { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
+import { lovable } from "@/integrations/lovable";
 
 interface Profile {
   id: string;
@@ -39,7 +40,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       async (_event, session) => {
         setSession(session);
         if (session?.user) {
-          // defer profile fetch to avoid deadlock
           setTimeout(() => fetchProfile(session.user.id), 0);
         } else {
           setProfile(null);
@@ -60,11 +60,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const signInWithGoogle = async (redirectTo?: string) => {
-    await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: {
-        redirectTo: redirectTo || window.location.origin,
-      },
+    await lovable.auth.signInWithOAuth("google", {
+      redirect_uri: redirectTo || window.location.origin,
     });
   };
 
