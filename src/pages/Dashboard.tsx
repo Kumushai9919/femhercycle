@@ -197,3 +197,18 @@ function getGreeting() {
   if (h < 18) return "좋은 오후에요";
   return "좋은 저녁이에요";
 }
+
+function getWeekChartData(logs: any[]) {
+  const days = ["일", "월", "화", "수", "목", "금", "토"];
+  const result = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = subDays(new Date(), i);
+    const dateStr = format(d, "yyyy-MM-dd");
+    const log = logs.find((l) => l.log_date === dateStr);
+    result.push({
+      day: days[d.getDay()],
+      energy: log?.energy_level ?? 0,
+    });
+  }
+  return result;
+}
