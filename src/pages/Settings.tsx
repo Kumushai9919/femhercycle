@@ -189,16 +189,16 @@ export default function SettingsPage() {
                 <RefreshCw className="h-3 w-3" /> 링크 재생성
               </button>
 
-              {partnerInfo && (
-                <div className="rounded-2xl bg-mist p-3 flex items-center justify-between">
+              {partners.map((p) => (
+                <div key={p.id} className="rounded-2xl bg-mist p-3 flex items-center justify-between">
                   <span className="text-sm font-body text-foreground">
-                    💜 {partnerInfo.full_name || "파트너"} 연결됨
+                    💜 {p.full_name || "파트너"} 연결됨
                   </span>
-                  <button onClick={removePartner} className="p-1.5 rounded-lg text-destructive hover:bg-destructive/10">
+                  <button onClick={() => removePartner(p.id)} className="p-1.5 rounded-lg text-destructive hover:bg-destructive/10">
                     <UserX className="h-4 w-4" />
                   </button>
                 </div>
-              )}
+              ))}
             </div>
           )}
         </Section>
