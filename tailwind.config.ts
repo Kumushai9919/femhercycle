@@ -13,6 +13,10 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        display: ['"Cormorant Garamond"', 'serif'],
+        body: ['"DM Sans"', 'sans-serif'],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -47,6 +51,24 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        // HerCycle palette
+        blush: "hsl(var(--blush))",
+        rose: "hsl(var(--rose))",
+        "deep-rose": "hsl(var(--deep-rose))",
+        plum: "hsl(var(--plum))",
+        lavender: "hsl(var(--lavender))",
+        mist: "hsl(var(--mist))",
+        cream: "hsl(var(--cream))",
+        charcoal: "hsl(var(--charcoal))",
+        // Phase colors
+        "phase-menstruation": "hsl(var(--phase-menstruation))",
+        "phase-menstruation-text": "hsl(var(--phase-menstruation-text))",
+        "phase-follicular": "hsl(var(--phase-follicular))",
+        "phase-follicular-text": "hsl(var(--phase-follicular-text))",
+        "phase-ovulation": "hsl(var(--phase-ovulation))",
+        "phase-ovulation-text": "hsl(var(--phase-ovulation-text))",
+        "phase-luteal": "hsl(var(--phase-luteal))",
+        "phase-luteal-text": "hsl(var(--phase-luteal-text))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -63,27 +85,28 @@ export default {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      boxShadow: {
+        soft: "0 2px 12px rgba(100,60,80,0.08)",
+        glow: "0 4px 20px rgba(155,107,138,0.15)",
+      },
       keyframes: {
         "accordion-down": {
-          from: {
-            height: "0",
-          },
-          to: {
-            height: "var(--radix-accordion-content-height)",
-          },
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
         },
         "accordion-up": {
-          from: {
-            height: "var(--radix-accordion-content-height)",
-          },
-          to: {
-            height: "0",
-          },
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+        "pulse-bloom": {
+          "0%, 100%": { transform: "scale(1)", opacity: "1" },
+          "50%": { transform: "scale(1.15)", opacity: "0.7" },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "pulse-bloom": "pulse-bloom 1.5s ease-in-out infinite",
       },
     },
   },
