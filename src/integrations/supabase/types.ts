@@ -14,13 +14,270 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      ai_routines: {
+        Row: {
+          created_at: string
+          id: string
+          log_date: string
+          phase: string
+          routines: Json
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          log_date: string
+          phase: string
+          routines: Json
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          log_date?: string
+          phase?: string
+          routines?: Json
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_routines_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cycle_logs: {
+        Row: {
+          created_at: string
+          cycle_day: number | null
+          energy_level: number | null
+          id: string
+          log_date: string
+          mood: string | null
+          note: string | null
+          phase: string | null
+          symptoms: string[] | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          cycle_day?: number | null
+          energy_level?: number | null
+          id?: string
+          log_date: string
+          mood?: string | null
+          note?: string | null
+          phase?: string | null
+          symptoms?: string[] | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          cycle_day?: number | null
+          energy_level?: number | null
+          id?: string
+          log_date?: string
+          mood?: string | null
+          note?: string | null
+          phase?: string | null
+          symptoms?: string[] | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cycle_logs_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cycle_settings: {
+        Row: {
+          cycle_length: number
+          id: string
+          last_period_start: string | null
+          period_length: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          cycle_length?: number
+          id?: string
+          last_period_start?: string | null
+          period_length?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          cycle_length?: number
+          id?: string
+          last_period_start?: string | null
+          period_length?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cycle_settings_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      partner_access: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean
+          owner_id: string
+          partner_id: string
+          token_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          owner_id: string
+          partner_id: string
+          token_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          owner_id?: string
+          partner_id?: string
+          token_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "partner_access_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "partner_access_partner_id_fkey"
+            columns: ["partner_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "partner_access_token_id_fkey"
+            columns: ["token_id"]
+            isOneToOne: false
+            referencedRelation: "share_tokens"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          full_name: string | null
+          id: string
+          role: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          full_name?: string | null
+          id: string
+          role?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          role?: string
+        }
+        Relationships: []
+      }
+      share_tokens: {
+        Row: {
+          accepted_at: string | null
+          created_at: string
+          id: string
+          is_active: boolean
+          owner_id: string
+          partner_id: string | null
+          show_calendar: boolean
+          show_energy: boolean
+          show_mood: boolean
+          show_phase: boolean
+          show_predicted_dates: boolean
+          show_routine: boolean
+          token: string
+        }
+        Insert: {
+          accepted_at?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          owner_id: string
+          partner_id?: string | null
+          show_calendar?: boolean
+          show_energy?: boolean
+          show_mood?: boolean
+          show_phase?: boolean
+          show_predicted_dates?: boolean
+          show_routine?: boolean
+          token?: string
+        }
+        Update: {
+          accepted_at?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          owner_id?: string
+          partner_id?: string | null
+          show_calendar?: boolean
+          show_energy?: boolean
+          show_mood?: boolean
+          show_phase?: boolean
+          show_predicted_dates?: boolean
+          show_routine?: boolean
+          token?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "share_tokens_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "share_tokens_partner_id_fkey"
+            columns: ["partner_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_partner_owner_id: { Args: { _partner_id: string }; Returns: string }
+      get_user_role: { Args: { _user_id: string }; Returns: string }
+      is_partner_of: {
+        Args: { _owner_id: string; _partner_id: string }
+        Returns: boolean
+      }
     }
     Enums: {
       [_ in never]: never
