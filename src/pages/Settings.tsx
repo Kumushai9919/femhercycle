@@ -9,7 +9,7 @@ import { toast } from "sonner";
 import { Copy, LogOut, RefreshCw, UserX, Globe } from "lucide-react";
 
 export default function SettingsPage() {
-  const { user, profile, signOut } = useAuth();
+  const { user, profile, signOut, refreshProfile } = useAuth();
   const { t, lang, setLang } = useLanguage();
   const [settings, setSettings] = useState<any>(null);
   const [cycleLength, setCycleLength] = useState(28);
