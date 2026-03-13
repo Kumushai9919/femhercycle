@@ -23,7 +23,7 @@ export default function CalendarPage() {
   const { t, lang } = useLanguage();
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [settings, setSettings] = useState<any>(null);
-  const [selectedDay, setSelectedDay] = useState<Date | null>(null);
+  const [selectedDay, setSelectedDay] = useState<Date | null>(new Date());
 
   useEffect(() => {
     if (!user) return;
