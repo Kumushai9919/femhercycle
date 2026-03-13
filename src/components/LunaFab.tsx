@@ -7,7 +7,7 @@ export default function LunaFab() {
   const [open, setOpen] = useState(false);
   const location = useLocation();
 
-  if (location.pathname === "/settings") return null;
+  if (location.pathname === "/settings" || location.pathname === "/" || location.pathname.startsWith("/invite")) return null;
 
   return (
     <>
