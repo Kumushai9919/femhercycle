@@ -184,7 +184,7 @@ export default function LogPage() {
         <button
           onClick={handleSave}
           disabled={saving}
-          className="w-full rounded-2xl bg-gradient-to-r from-plum to-deep-rose py-3.5 text-accent-foreground font-body font-semibold shadow-glow transition-transform hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50"
+          className="w-full rounded-2xl bg-gradient-to-r from-primary/90 to-accent/80 py-3.5 text-primary-foreground font-body font-semibold shadow-soft transition-transform hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50"
         >
           {saving ? "저장 중…" : "✦ 오늘의 기록 저장하기"}
         </button>

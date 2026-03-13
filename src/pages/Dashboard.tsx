@@ -153,7 +153,8 @@ export default function Dashboard() {
                     <XAxis dataKey="day" tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} axisLine={false} tickLine={false} />
                     <YAxis hide domain={[0, 100]} />
                     <Tooltip
-                      contentStyle={{ borderRadius: 12, fontSize: 12, border: "1px solid hsl(var(--border))" }}
+                      contentStyle={{ borderRadius: 12, fontSize: 12, border: "1px solid hsl(var(--border))", background: "hsl(30 50% 97%)", color: "hsl(var(--foreground))" }}
+                      cursor={{ fill: "hsl(30 40% 95%)" }}
                       formatter={(v: number) => [`${v}%`, "에너지"]}
                     />
                     <Bar dataKey="energy" radius={[6, 6, 0, 0]} fill="hsl(var(--primary))" opacity={0.8} />
