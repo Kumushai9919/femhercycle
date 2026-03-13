@@ -532,6 +532,6 @@ const ru: TranslationMap = {
   return_home: "На главную",
 };
 
-export const translations: Record<Lang, typeof ko> = { ko, en, ru };
+export const translations: Record<Lang, TranslationMap> = { ko, en, ru };
 
-export type TranslationKey = keyof typeof ko;
+export type TranslationKey = keyof TranslationMap;
