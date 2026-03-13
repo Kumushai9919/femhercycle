@@ -390,6 +390,39 @@ const en: TranslationMap = {
   partner_support_ovulation: "Most vibrant phase! Create special moments together.",
   partner_support_luteal: "Be patient with mood changes and offer warm support.",
 
+  pr_exercise_time: "Morning",
+  pr_meal_time: "Mealtime",
+  pr_night: "Night",
+  pr_all_day: "All day",
+  pr_afternoon: "Afternoon",
+  pr_snack: "Snack",
+  pr_evening: "Evening",
+
+  pr_menstruation: [
+    "🧘|Gentle Yoga|Light stretching and yoga|Join for a stretch together",
+    "🥗|Iron-Rich Diet|Eat iron-rich foods|Prepare an iron-rich meal",
+    "🌙|Plenty of Sleep|Go to bed early|Create a comfortable sleep environment",
+    "💬|Emotional Support|A time for empathy|A kind word goes a long way",
+  ],
+  pr_follicular: [
+    "🏃‍♀️|Cardio Workout|Running, cycling, active exercise|Suggest working out together",
+    "🥗|Protein Boost|Quality protein intake|Have a protein-rich meal together",
+    "🌙|Regular Sleep|Maintain consistent sleep|Go to bed early together",
+    "💬|Activities Together|High energy phase|Try new activities together",
+  ],
+  pr_ovulation: [
+    "💪|High-Intensity Training|HIIT or weight training|Hit the gym together",
+    "🥗|Antioxidant Foods|Berries, green tea, etc.|Prepare healthy snacks together",
+    "🌙|Quality Sleep|Optimize sleep environment|Enjoy a restful night together",
+    "💬|Special Time|Most vibrant phase|Plan a special date",
+  ],
+  pr_luteal: [
+    "🚶‍♀️|Light Walk|Walk at a comfortable pace|Suggest a walk together",
+    "🥗|Complex Carbs|Sweet potatoes, brown rice|Prepare a nutritious meal",
+    "🌙|Relaxing Routine|Warm bath and herbal tea|Make some herbal tea",
+    "💬|Patience & Empathy|Big mood changes|Be patient with mood changes",
+  ],
+
   not_found: "Page not found",
   return_home: "Return to Home",
 };
