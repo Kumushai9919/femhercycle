@@ -49,6 +49,38 @@ export type Database = {
           },
         ]
       }
+      ai_usage: {
+        Row: {
+          created_at: string
+          id: string
+          request_count: number
+          usage_date: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          request_count?: number
+          usage_date?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          request_count?: number
+          usage_date?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_usage_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       cycle_logs: {
         Row: {
           created_at: string
@@ -275,6 +307,10 @@ export type Database = {
       accept_invite: {
         Args: { _partner_id: string; _token: string }
         Returns: string
+      }
+      check_and_increment_ai_usage: {
+        Args: { _daily_limit?: number; _user_id: string }
+        Returns: number
       }
       get_invite_owner_name: { Args: { _token: string }; Returns: string }
       get_partner_owner_id: { Args: { _partner_id: string }; Returns: string }
