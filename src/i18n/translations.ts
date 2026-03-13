@@ -363,7 +363,7 @@ const en: TranslationMap = {
   return_home: "Return to Home",
 };
 
-const ru: typeof ko = {
+const ru: TranslationMap = {
   landing_tagline: "Понимайте свой цикл,\nподдерживайте друг друга.",
   login_google: "Продолжить с Google",
 
