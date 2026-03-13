@@ -6,9 +6,6 @@ export const LANG_LABELS: Record<Lang, string> = {
   ru: "Русский",
 };
 
-export type Translations = {
-  [key: string]: string | string[] | string[][];
-};
 
 const ko = {
   // Landing
