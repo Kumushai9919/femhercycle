@@ -184,6 +184,40 @@ const ko = {
   partner_support_ovulation: "가장 활기찬 시기! 특별한 시간을 함께 만들어 보세요.",
   partner_support_luteal: "감정 변화에 인내심을 갖고 따뜻하게 지지해 주세요.",
 
+  // Partner routine
+  pr_exercise_time: "아침",
+  pr_meal_time: "식사 시간",
+  pr_night: "밤",
+  pr_all_day: "하루 종일",
+  pr_afternoon: "오후",
+  pr_snack: "간식",
+  pr_evening: "저녁",
+
+  pr_menstruation: [
+    "🧘|부드러운 요가|가벼운 스트레칭과 요가|함께 스트레칭을 해 보세요",
+    "🥗|철분 보충 식단|철분이 풍부한 음식 섭취|철분이 많은 식사를 준비해 주세요",
+    "🌙|충분한 수면|평소보다 일찍 취침|편안한 수면 환경을 만들어 주세요",
+    "💬|감정적 지지|공감과 이해가 필요한 시기|따뜻한 말 한마디가 큰 힘이 돼요",
+  ],
+  pr_follicular: [
+    "🏃‍♀️|유산소 운동|달리기, 자전거 등 활발한 운동|함께 운동하자고 제안하세요",
+    "🥗|단백질 강화|양질의 단백질 섭취|단백질 풍부한 식사를 함께 하세요",
+    "🌙|규칙적 수면|일정한 수면 패턴 유지|함께 일찍 잠자리에 들어요",
+    "💬|함께 활동|에너지가 높은 시기|새로운 활동을 함께 시도해 보세요",
+  ],
+  pr_ovulation: [
+    "💪|고강도 운동|HIIT 또는 웨이트 트레이닝|함께 헬스장에 가 보세요",
+    "🥗|항산화 식품|베리류, 녹차 등 섭취|건강한 간식을 함께 준비하세요",
+    "🌙|질 좋은 수면|수면 환경 최적화|편안한 밤을 함께 보내세요",
+    "💬|특별한 시간|가장 활기찬 시기|특별한 데이트를 계획하세요",
+  ],
+  pr_luteal: [
+    "🚶‍♀️|가벼운 산책|편안한 속도로 산책하기|함께 산책하자고 제안하세요",
+    "🥗|복합 탄수화물|고구마, 현미 등 섭취|영양가 있는 식사를 준비해 주세요",
+    "🌙|릴렉싱 루틴|따뜻한 목욕과 허브티|허브티를 끓여 주세요",
+    "💬|인내와 공감|감정 변화가 큰 시기|감정 변화에 인내심을 가져 주세요",
+  ],
+
   // Not found
   not_found: "페이지를 찾을 수 없어요",
   return_home: "홈으로 돌아가기",
@@ -356,6 +390,39 @@ const en: TranslationMap = {
   partner_support_ovulation: "Most vibrant phase! Create special moments together.",
   partner_support_luteal: "Be patient with mood changes and offer warm support.",
 
+  pr_exercise_time: "Morning",
+  pr_meal_time: "Mealtime",
+  pr_night: "Night",
+  pr_all_day: "All day",
+  pr_afternoon: "Afternoon",
+  pr_snack: "Snack",
+  pr_evening: "Evening",
+
+  pr_menstruation: [
+    "🧘|Gentle Yoga|Light stretching and yoga|Join for a stretch together",
+    "🥗|Iron-Rich Diet|Eat iron-rich foods|Prepare an iron-rich meal",
+    "🌙|Plenty of Sleep|Go to bed early|Create a comfortable sleep environment",
+    "💬|Emotional Support|A time for empathy|A kind word goes a long way",
+  ],
+  pr_follicular: [
+    "🏃‍♀️|Cardio Workout|Running, cycling, active exercise|Suggest working out together",
+    "🥗|Protein Boost|Quality protein intake|Have a protein-rich meal together",
+    "🌙|Regular Sleep|Maintain consistent sleep|Go to bed early together",
+    "💬|Activities Together|High energy phase|Try new activities together",
+  ],
+  pr_ovulation: [
+    "💪|High-Intensity Training|HIIT or weight training|Hit the gym together",
+    "🥗|Antioxidant Foods|Berries, green tea, etc.|Prepare healthy snacks together",
+    "🌙|Quality Sleep|Optimize sleep environment|Enjoy a restful night together",
+    "💬|Special Time|Most vibrant phase|Plan a special date",
+  ],
+  pr_luteal: [
+    "🚶‍♀️|Light Walk|Walk at a comfortable pace|Suggest a walk together",
+    "🥗|Complex Carbs|Sweet potatoes, brown rice|Prepare a nutritious meal",
+    "🌙|Relaxing Routine|Warm bath and herbal tea|Make some herbal tea",
+    "💬|Patience & Empathy|Big mood changes|Be patient with mood changes",
+  ],
+
   not_found: "Page not found",
   return_home: "Return to Home",
 };
@@ -524,6 +591,39 @@ const ru: TranslationMap = {
   partner_support_follicular: "Отличное время для активностей вместе!",
   partner_support_ovulation: "Самая активная фаза! Создайте особенные моменты.",
   partner_support_luteal: "Терпение к перепадам настроения и тёплая поддержка.",
+
+  pr_exercise_time: "Утро",
+  pr_meal_time: "Приём пищи",
+  pr_night: "Ночь",
+  pr_all_day: "Весь день",
+  pr_afternoon: "День",
+  pr_snack: "Перекус",
+  pr_evening: "Вечер",
+
+  pr_menstruation: [
+    "🧘|Мягкая йога|Лёгкая растяжка и йога|Потянитесь вместе",
+    "🥗|Богатая железом диета|Продукты с железом|Приготовьте еду с железом",
+    "🌙|Достаточно сна|Ложитесь раньше|Создайте уютную обстановку для сна",
+    "💬|Эмоциональная поддержка|Время для сочувствия|Доброе слово — лучшая помощь",
+  ],
+  pr_follicular: [
+    "🏃‍♀️|Кардио|Бег, велосипед, активность|Предложите тренировку вместе",
+    "🥗|Белковое питание|Качественный белок|Приготовьте белковую еду вместе",
+    "🌙|Регулярный сон|Стабильный режим сна|Ложитесь спать вместе рано",
+    "💬|Совместные активности|Фаза высокой энергии|Попробуйте новые занятия вместе",
+  ],
+  pr_ovulation: [
+    "💪|Интенсивная тренировка|HIIT или силовая|Сходите в зал вместе",
+    "🥗|Антиоксиданты|Ягоды, зелёный чай|Приготовьте полезные перекусы",
+    "🌙|Качественный сон|Оптимизируйте сон|Проведите спокойную ночь",
+    "💬|Особенное время|Самая активная фаза|Запланируйте особенное свидание",
+  ],
+  pr_luteal: [
+    "🚶‍♀️|Лёгкая прогулка|Прогулка в комфортном темпе|Предложите прогулку вместе",
+    "🥗|Сложные углеводы|Батат, бурый рис|Приготовьте питательную еду",
+    "🌙|Расслабляющий ритуал|Ванна и травяной чай|Заварите травяной чай",
+    "💬|Терпение и эмпатия|Перепады настроения|Будьте терпеливы к настроению",
+  ],
 
   not_found: "Страница не найдена",
   return_home: "На главную",

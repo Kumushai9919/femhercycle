@@ -17,6 +17,7 @@ import InvitePage from "./pages/Invite";
 import PartnerHome from "./pages/partner/PartnerHome";
 import PartnerCalendar from "./pages/partner/PartnerCalendar";
 import PartnerRoutine from "./pages/partner/PartnerRoutine";
+import PartnerSettings from "./pages/partner/PartnerSettings";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -40,6 +41,7 @@ const App = () => (
               <Route path="/partner/:ownerId" element={<ProtectedRoute><PartnerHome /></ProtectedRoute>} />
               <Route path="/partner/:ownerId/calendar" element={<ProtectedRoute><PartnerCalendar /></ProtectedRoute>} />
               <Route path="/partner/:ownerId/routine" element={<ProtectedRoute><PartnerRoutine /></ProtectedRoute>} />
+              <Route path="/partner/:ownerId/settings" element={<ProtectedRoute><PartnerSettings /></ProtectedRoute>} />
               <Route path="*" element={<NotFound />} />
             </Routes>
             <LunaFab />
