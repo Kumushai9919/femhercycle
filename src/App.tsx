@@ -17,6 +17,7 @@ import InvitePage from "./pages/Invite";
 import PartnerHome from "./pages/partner/PartnerHome";
 import PartnerCalendar from "./pages/partner/PartnerCalendar";
 import PartnerRoutine from "./pages/partner/PartnerRoutine";
+import PartnerSettings from "./pages/partner/PartnerSettings";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
