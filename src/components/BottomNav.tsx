@@ -25,6 +25,7 @@ export function PartnerBottomNav({ ownerId }: { ownerId: string }) {
     { path: `/partner/${ownerId}`, labelKey: "nav_home", icon: Home },
     { path: `/partner/${ownerId}/calendar`, labelKey: "nav_calendar", icon: CalendarDays },
     { path: `/partner/${ownerId}/routine`, labelKey: "nav_routine", icon: Sparkles },
+    { path: `/partner/${ownerId}/settings`, labelKey: "nav_settings", icon: Settings },
   ];
   return <BottomNavBase tabs={tabs} />;
 }

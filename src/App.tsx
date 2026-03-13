@@ -41,6 +41,7 @@ const App = () => (
               <Route path="/partner/:ownerId" element={<ProtectedRoute><PartnerHome /></ProtectedRoute>} />
               <Route path="/partner/:ownerId/calendar" element={<ProtectedRoute><PartnerCalendar /></ProtectedRoute>} />
               <Route path="/partner/:ownerId/routine" element={<ProtectedRoute><PartnerRoutine /></ProtectedRoute>} />
+              <Route path="/partner/:ownerId/settings" element={<ProtectedRoute><PartnerSettings /></ProtectedRoute>} />
               <Route path="*" element={<NotFound />} />
             </Routes>
             <LunaFab />
