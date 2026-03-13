@@ -126,9 +126,13 @@ export default function SettingsPage() {
 
         {/* Profile */}
         <Section title={t("profile") as string}>
-          <div className="flex items-center gap-3 mb-3">
-            {profile?.avatar_url && (
+          <div className="flex items-center gap-3">
+            {profile?.avatar_url ? (
               <img src={profile.avatar_url} alt="" className="h-12 w-12 rounded-full object-cover" />
+            ) : (
+              <div className="h-12 w-12 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-bold text-lg">
+                {displayName?.[0]?.toUpperCase() || "?"}
+              </div>
             )}
             <input
               value={displayName}
@@ -137,6 +141,14 @@ export default function SettingsPage() {
               placeholder={t("name_placeholder") as string}
             />
           </div>
+          {displayName !== (profile?.full_name || "") && (
+            <button
+              onClick={saveDisplayName}
+              className="mt-3 w-full rounded-2xl bg-primary/90 py-2.5 text-primary-foreground text-sm font-body font-semibold"
+            >
+              {t("save")}
+            </button>
+          )}
         </Section>
 
         {/* Cycle Setup */}
