@@ -57,9 +57,32 @@ serve(async (req) => {
       });
     }
 
-    const { messages } = await req.json();
+    const { messages, lang } = await req.json();
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
+
+    const systemPrompts: Record<string, string> = {
+      ko: `당신은 여성 생리 주기 AI 어시스턴트 "루나"입니다.
+규칙:
+- 먼저 질문에 공감하며 핵심 답변을 2-3문장으로.
+- 그 다음 "✨ 이렇게 해보세요" 라고 쓰고 1-2개 실천 팁을 한 줄씩 짧게.
+- 이모지는 1-2개만. 심각한 증상은 의료진 상담 권유.
+- 한국어로 대화.`,
+      en: `You are "Luna", a menstrual cycle AI assistant.
+Rules:
+- First empathize, then give a core answer in 2-3 sentences.
+- Then write "✨ Try this" and 1-2 short practical tips.
+- Use 1-2 emojis max. For serious symptoms, recommend consulting a doctor.
+- Respond in English.`,
+      ru: `Вы — "Луна", AI-ассистент по менструальному циклу.
+Правила:
+- Сначала проявите эмпатию, затем дайте ответ в 2-3 предложениях.
+- Затем напишите "✨ Попробуйте" и 1-2 коротких совета.
+- Используйте 1-2 эмодзи. При серьёзных симптомах рекомендуйте врача.
+- Отвечайте на русском языке.`,
+    };
+
+    const systemContent = systemPrompts[lang] || systemPrompts.ko;
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
@@ -70,15 +93,7 @@ serve(async (req) => {
       body: JSON.stringify({
         model: "google/gemini-3-flash-preview",
         messages: [
-          {
-            role: "system",
-            content: `당신은 여성 생리 주기 AI 어시스턴트 "루나"입니다.
-규칙:
-- 먼저 질문에 공감하며 핵심 답변을 2-3문장으로.
-- 그 다음 "✨ 이렇게 해보세요" 라고 쓰고 1-2개 실천 팁을 한 줄씩 짧게.
-- 이모지는 1-2개만. 심각한 증상은 의료진 상담 권유.
-- 한국어로 대화.`,
-          },
+          { role: "system", content: systemContent },
           ...messages,
         ],
         stream: true,

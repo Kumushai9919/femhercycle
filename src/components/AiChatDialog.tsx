@@ -4,18 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Send } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { supabase } from "@/integrations/supabase/client";
+import { useLanguage } from "@/hooks/useLanguage";
 import lunaMascot from "@/assets/luna-mascot.png";
 
 type Msg = { role: "user" | "assistant"; content: string };
 
 const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/cycle-chat`;
 const DAILY_LIMIT = 3;
-
-const QUICK_QUESTIONS = [
-  "생리통 완화법 알려줘",
-  "배란기에 좋은 음식은?",
-  "PMS 증상 관리법",
-];
 
 export default function AiChatDialog({
   open,
@@ -24,27 +19,22 @@ export default function AiChatDialog({
   open: boolean;
   onOpenChange: (v: boolean) => void;
 }) {
+  const { t, lang } = useLanguage();
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [remaining, setRemaining] = useState<number | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // Fetch today's usage when dialog opens
+  const quickQuestions = [t("quick_q1") as string, t("quick_q2") as string, t("quick_q3") as string];
+
   useEffect(() => {
     if (!open) return;
     const fetchUsage = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
-      
       const today = new Date().toISOString().split("T")[0];
-      const { data } = await supabase
-        .from("ai_usage")
-        .select("request_count")
-        .eq("user_id", user.id)
-        .eq("usage_date", today)
-        .maybeSingle();
-      
+      const { data } = await supabase.from("ai_usage").select("request_count").eq("user_id", user.id).eq("usage_date", today).maybeSingle();
       const used = data?.request_count ?? 0;
       setRemaining(Math.max(0, DAILY_LIMIT - used));
     };
@@ -85,27 +75,22 @@ export default function AiChatDialog({
           "Content-Type": "application/json",
           Authorization: `Bearer ${session?.access_token || import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
         },
-        body: JSON.stringify({ messages: allMessages }),
+        body: JSON.stringify({ messages: allMessages, lang }),
       });
 
       if (!resp.ok) {
-        const err = await resp.json().catch(() => ({ error: "오류 발생" }));
-        if (err.code === "DAILY_LIMIT_EXCEEDED") {
-          setRemaining(0);
-        }
-        upsertAssistant(err.error || "죄송해요, 오류가 발생했어요. 다시 시도해 주세요.");
+        const err = await resp.json().catch(() => ({ error: "Error" }));
+        if (err.code === "DAILY_LIMIT_EXCEEDED") setRemaining(0);
+        upsertAssistant(err.error || "Error occurred. Please try again.");
         setIsLoading(false);
         return;
       }
 
-      // Update remaining from header
       const remainingHeader = resp.headers.get("X-Remaining-Requests");
-      if (remainingHeader !== null) {
-        setRemaining(parseInt(remainingHeader, 10));
-      }
+      if (remainingHeader !== null) setRemaining(parseInt(remainingHeader, 10));
 
       if (!resp.body) {
-        upsertAssistant("응답을 받지 못했어요.");
+        upsertAssistant("No response received.");
         setIsLoading(false);
         return;
       }
@@ -140,7 +125,7 @@ export default function AiChatDialog({
         }
       }
     } catch {
-      upsertAssistant("네트워크 오류가 발생했어요. 다시 시도해 주세요.");
+      upsertAssistant("Network error. Please try again.");
     }
     setIsLoading(false);
   };
@@ -150,21 +135,17 @@ export default function AiChatDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-[430px] h-[85vh] p-0 flex flex-col gap-0 rounded-2xl overflow-hidden">
-        <DialogTitle className="sr-only">AI 챗봇</DialogTitle>
+        <DialogTitle className="sr-only">AI Chat</DialogTitle>
         {/* Header */}
         <div className="flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-primary to-accent">
-          <img src={lunaMascot} alt="루나" className="w-9 h-9 rounded-full bg-white/20 p-0.5" />
+          <img src={lunaMascot} alt="Luna" className="w-9 h-9 rounded-full bg-white/20 p-0.5" />
           <div className="flex-1">
-            <p className="text-sm font-display font-bold text-white">루나</p>
-            <p className="text-[11px] text-white/80 font-body">생리 주기 AI 어시스턴트</p>
+            <p className="text-sm font-display font-bold text-white">{t("luna_name")}</p>
+            <p className="text-[11px] text-white/80 font-body">{t("luna_subtitle")}</p>
           </div>
           {remaining !== null && (
-            <div className={`text-[11px] font-body px-2.5 py-1 rounded-full ${
-              isLimitReached 
-                ? "bg-destructive/20 text-white" 
-                : "bg-white/20 text-white"
-            }`}>
-              오늘 {remaining}회 남음
+            <div className={`text-[11px] font-body px-2.5 py-1 rounded-full ${isLimitReached ? "bg-destructive/20 text-white" : "bg-white/20 text-white"}`}>
+              {t("remaining_today", { n: remaining })}
             </div>
           )}
         </div>
@@ -173,20 +154,17 @@ export default function AiChatDialog({
         <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-4 space-y-3 bg-muted/30">
           {messages.length === 0 && (
             <div className="text-center py-8">
-              <img src={lunaMascot} alt="루나" className="w-16 h-16 mx-auto mb-3" />
-              <p className="text-sm font-body text-foreground font-medium">안녕하세요! 루나예요 🌙</p>
-              <p className="text-xs text-muted-foreground font-body mt-1">생리 주기에 대해 무엇이든 물어보세요</p>
+              <img src={lunaMascot} alt="Luna" className="w-16 h-16 mx-auto mb-3" />
+              <p className="text-sm font-body text-foreground font-medium">{t("luna_greeting")}</p>
+              <p className="text-xs text-muted-foreground font-body mt-1">{t("luna_ask")}</p>
               {remaining !== null && (
                 <p className="text-[11px] text-muted-foreground font-body mt-1">
-                  하루 {DAILY_LIMIT}회 무료 질문 가능 · 오늘 {remaining}회 남음
+                  {t("daily_free", { limit: DAILY_LIMIT, remaining })}
                 </p>
               )}
               <div className="mt-4 flex flex-col gap-2">
-                {QUICK_QUESTIONS.map((q) => (
-                  <button
-                    key={q}
-                    onClick={() => send(q)}
-                    disabled={isLimitReached}
+                {quickQuestions.map((q) => (
+                  <button key={q} onClick={() => send(q)} disabled={isLimitReached}
                     className="text-xs font-body text-primary bg-primary/10 rounded-full px-4 py-2 hover:bg-primary/20 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {q}
@@ -198,20 +176,14 @@ export default function AiChatDialog({
 
           {messages.map((msg, i) => (
             <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
-              <div
-                className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-sm font-body ${
-                  msg.role === "user"
-                    ? "bg-primary text-primary-foreground rounded-br-md"
-                    : "bg-card text-foreground shadow-sm rounded-bl-md"
-                }`}
-              >
+              <div className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-sm font-body ${
+                msg.role === "user" ? "bg-primary text-primary-foreground rounded-br-md" : "bg-card text-foreground shadow-sm rounded-bl-md"
+              }`}>
                 {msg.role === "assistant" ? (
                   <div className="prose prose-sm max-w-none [&>p]:m-0">
                     <ReactMarkdown>{msg.content}</ReactMarkdown>
                   </div>
-                ) : (
-                  msg.content
-                )}
+                ) : msg.content}
               </div>
             </div>
           ))}
@@ -229,38 +201,28 @@ export default function AiChatDialog({
           )}
         </div>
 
-        {/* Limit reached banner */}
         {isLimitReached && (
           <div className="px-4 py-2.5 bg-destructive/10 border-t border-destructive/20">
             <p className="text-xs text-destructive font-body text-center">
-              🌙 오늘의 무료 질문 {DAILY_LIMIT}회를 모두 사용했어요. 내일 다시 만나요!
+              {t("limit_reached", { n: DAILY_LIMIT })}
             </p>
           </div>
         )}
 
-        {/* Disclaimer */}
         <div className="px-4 py-1.5 bg-muted/50 border-t border-border">
-          <p className="text-[10px] text-muted-foreground font-body text-center">
-            ⚕️ 정확한 진단은 의료진과 의사와 상담하시기 바랍니다
-          </p>
+          <p className="text-[10px] text-muted-foreground font-body text-center">{t("medical_disclaimer")}</p>
         </div>
 
-        {/* Input */}
         <div className="px-3 py-3 border-t border-border bg-background flex gap-2">
           <input
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && send(input)}
-            placeholder={isLimitReached ? "내일 다시 이용해 주세요" : "질문을 입력하세요..."}
+            placeholder={(isLimitReached ? t("limit_placeholder") : t("input_placeholder")) as string}
             disabled={isLimitReached}
             className="flex-1 text-sm font-body bg-muted rounded-full px-4 py-2.5 outline-none focus:ring-2 focus:ring-primary/30 placeholder:text-muted-foreground disabled:opacity-50 disabled:cursor-not-allowed"
           />
-          <Button
-            size="icon"
-            onClick={() => send(input)}
-            disabled={!input.trim() || isLoading || isLimitReached}
-            className="rounded-full h-10 w-10 shrink-0"
-          >
+          <Button size="icon" onClick={() => send(input)} disabled={!input.trim() || isLoading || isLimitReached} className="rounded-full h-10 w-10 shrink-0">
             <Send className="h-4 w-4" />
           </Button>
         </div>

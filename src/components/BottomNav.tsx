@@ -1,29 +1,30 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { Home, CalendarDays, PenSquare, Sparkles, Settings } from "lucide-react";
+import { useLanguage } from "@/hooks/useLanguage";
 
 interface NavItem {
   path: string;
-  label: string;
+  labelKey: string;
   icon: React.ElementType;
 }
 
-const ownerTabs: NavItem[] = [
-  { path: "/dashboard", label: "홈", icon: Home },
-  { path: "/calendar", label: "캘린더", icon: CalendarDays },
-  { path: "/log", label: "기록", icon: PenSquare },
-  { path: "/routine", label: "루틴", icon: Sparkles },
-  { path: "/settings", label: "설정", icon: Settings },
+const ownerTabKeys: NavItem[] = [
+  { path: "/dashboard", labelKey: "nav_home", icon: Home },
+  { path: "/calendar", labelKey: "nav_calendar", icon: CalendarDays },
+  { path: "/log", labelKey: "nav_log", icon: PenSquare },
+  { path: "/routine", labelKey: "nav_routine", icon: Sparkles },
+  { path: "/settings", labelKey: "nav_settings", icon: Settings },
 ];
 
 export function OwnerBottomNav() {
-  return <BottomNavBase tabs={ownerTabs} />;
+  return <BottomNavBase tabs={ownerTabKeys} />;
 }
 
 export function PartnerBottomNav({ ownerId }: { ownerId: string }) {
   const tabs: NavItem[] = [
-    { path: `/partner/${ownerId}`, label: "홈", icon: Home },
-    { path: `/partner/${ownerId}/calendar`, label: "캘린더", icon: CalendarDays },
-    { path: `/partner/${ownerId}/routine`, label: "루틴", icon: Sparkles },
+    { path: `/partner/${ownerId}`, labelKey: "nav_home", icon: Home },
+    { path: `/partner/${ownerId}/calendar`, labelKey: "nav_calendar", icon: CalendarDays },
+    { path: `/partner/${ownerId}/routine`, labelKey: "nav_routine", icon: Sparkles },
   ];
   return <BottomNavBase tabs={tabs} />;
 }
@@ -31,6 +32,7 @@ export function PartnerBottomNav({ ownerId }: { ownerId: string }) {
 function BottomNavBase({ tabs }: { tabs: NavItem[] }) {
   const location = useLocation();
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   return (
     <nav className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] z-50">
@@ -49,7 +51,7 @@ function BottomNavBase({ tabs }: { tabs: NavItem[] }) {
                 }`}
               >
                 <tab.icon className="h-5 w-5" />
-                <span className="text-[10px] font-medium font-body">{tab.label}</span>
+                <span className="text-[10px] font-medium font-body">{t(tab.labelKey as any)}</span>
               </button>
             );
           })}

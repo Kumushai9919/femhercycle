@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
+import { useLanguage } from "@/hooks/useLanguage";
 import { supabase } from "@/integrations/supabase/client";
 import MobileLayout from "@/components/MobileLayout";
 import { OwnerBottomNav } from "@/components/BottomNav";
@@ -7,15 +8,6 @@ import PhaseChip from "@/components/PhaseChip";
 import AiBadge from "@/components/AiBadge";
 import { getPhaseInfo, type Phase } from "@/lib/cycle";
 import { format } from "date-fns";
-
-const CATEGORIES = [
-  { key: "all", label: "전체" },
-  { key: "exercise", label: "🏋️ 운동" },
-  { key: "diet", label: "🥗 식단" },
-  { key: "sleep", label: "🌙 수면" },
-  { key: "mindset", label: "🧘 마인드" },
-  { key: "supplements", label: "💊 영양제" },
-];
 
 interface RoutineItem {
   category: string;
@@ -27,7 +19,6 @@ interface RoutineItem {
   priority: string;
 }
 
-// Default routines per phase (used when AI is not available)
 const DEFAULT_ROUTINES: Record<Phase, RoutineItem[]> = {
   menstruation: [
     { category: "exercise", emoji: "🧘", name: "부드러운 요가", time: "아침 15분", description: "생리 중 경련을 완화하는 부드러운 스트레칭", logReason: "생리기 통증 완화", priority: "high" },
@@ -61,10 +52,20 @@ const DEFAULT_ROUTINES: Record<Phase, RoutineItem[]> = {
 
 export default function RoutinePage() {
   const { user } = useAuth();
+  const { t } = useLanguage();
   const [settings, setSettings] = useState<any>(null);
   const [routines, setRoutines] = useState<RoutineItem[]>([]);
   const [activeTab, setActiveTab] = useState("all");
   const [loading, setLoading] = useState(true);
+
+  const CATEGORIES = [
+    { key: "all", label: t("cat_all") },
+    { key: "exercise", label: t("cat_exercise") },
+    { key: "diet", label: t("cat_diet") },
+    { key: "sleep", label: t("cat_sleep") },
+    { key: "mindset", label: t("cat_mind") },
+    { key: "supplements", label: t("cat_supplements") },
+  ];
 
   useEffect(() => {
     if (!user) return;
@@ -73,21 +74,11 @@ export default function RoutinePage() {
       setSettings(s);
       if (s?.last_period_start) {
         const phaseInfo = getPhaseInfo(new Date(), new Date(s.last_period_start), s.cycle_length, s.period_length);
-
-        // Check cache first
         const today = format(new Date(), "yyyy-MM-dd");
-        const { data: cached } = await supabase
-          .from("ai_routines")
-          .select("routines")
-          .eq("user_id", user.id)
-          .eq("phase", phaseInfo.phase)
-          .eq("log_date", today)
-          .maybeSingle();
-
+        const { data: cached } = await supabase.from("ai_routines").select("routines").eq("user_id", user.id).eq("phase", phaseInfo.phase).eq("log_date", today).maybeSingle();
         if (cached?.routines) {
           setRoutines(cached.routines as unknown as RoutineItem[]);
         } else {
-          // Use default routines (AI will be wired later)
           setRoutines(DEFAULT_ROUTINES[phaseInfo.phase]);
         }
       }
@@ -106,29 +97,24 @@ export default function RoutinePage() {
       <div className="pb-24 px-5 pt-8">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h1 className="text-xl font-display font-bold text-foreground">나만의 루틴</h1>
+            <h1 className="text-xl font-display font-bold text-foreground">{t("my_routine")}</h1>
             {phaseInfo && (
               <div className="flex items-center gap-2 mt-1">
                 <PhaseChip phase={phaseInfo.phase} size="sm" />
               </div>
             )}
           </div>
-          <AiBadge label="맞춤 추천" />
+          <AiBadge label={t("custom_rec") as string} />
         </div>
 
-        {/* Tabs */}
         <div className="flex gap-2 overflow-x-auto pb-2 mb-4 no-scrollbar">
           {CATEGORIES.map((cat) => (
-            <button
-              key={cat.key}
-              onClick={() => setActiveTab(cat.key)}
+            <button key={cat.key} onClick={() => setActiveTab(cat.key)}
               className={`whitespace-nowrap rounded-full px-3 py-1.5 text-xs font-body font-medium transition-all ${
-                activeTab === cat.key
-                  ? "bg-plum text-accent-foreground"
-                  : "bg-mist text-muted-foreground hover:bg-lavender"
+                activeTab === cat.key ? "bg-plum text-accent-foreground" : "bg-mist text-muted-foreground hover:bg-lavender"
               }`}
             >
-              {cat.label}
+              {cat.label as string}
             </button>
           ))}
         </div>
@@ -136,7 +122,7 @@ export default function RoutinePage() {
         {loading ? (
           <div className="flex flex-col items-center gap-3 py-12">
             <span className="text-4xl animate-pulse-bloom">🌸</span>
-            <p className="text-sm text-muted-foreground font-body">분석 중…</p>
+            <p className="text-sm text-muted-foreground font-body">{t("analyzing")}</p>
           </div>
         ) : (
           <div className="space-y-3">
