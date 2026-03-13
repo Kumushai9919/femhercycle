@@ -190,9 +190,11 @@ const ko = {
   // Not found
   not_found: "페이지를 찾을 수 없어요",
   return_home: "홈으로 돌아가기",
-} as const;
+};
 
-const en: typeof ko = {
+type TranslationMap = typeof ko;
+
+const en: TranslationMap = {
   landing_tagline: "Understand your cycle,\nsupport each other.",
   login_google: "Continue with Google",
 
