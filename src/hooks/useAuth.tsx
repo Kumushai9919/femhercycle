@@ -17,6 +17,7 @@ interface AuthContextType {
   loading: boolean;
   signInWithGoogle: (redirectTo?: string) => Promise<void>;
   signOut: () => Promise<void>;
+  refreshProfile: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -65,6 +66,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     });
   };
 
+  const refreshProfile = async () => {
+    if (session?.user) await fetchProfile(session.user.id);
+  };
+
   const signOut = async () => {
     await supabase.auth.signOut();
     setProfile(null);
@@ -72,7 +77,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ session, user: session?.user ?? null, profile, loading, signInWithGoogle, signOut }}
+      value={{ session, user: session?.user ?? null, profile, loading, signInWithGoogle, signOut, refreshProfile }}
     >
       {children}
     </AuthContext.Provider>

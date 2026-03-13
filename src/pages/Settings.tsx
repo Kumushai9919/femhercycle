@@ -9,7 +9,7 @@ import { toast } from "sonner";
 import { Copy, LogOut, RefreshCw, UserX, Globe } from "lucide-react";
 
 export default function SettingsPage() {
-  const { user, profile, signOut } = useAuth();
+  const { user, profile, signOut, refreshProfile } = useAuth();
   const { t, lang, setLang } = useLanguage();
   const [settings, setSettings] = useState<any>(null);
   const [cycleLength, setCycleLength] = useState(28);
@@ -53,15 +53,19 @@ export default function SettingsPage() {
     }
   };
 
+  const saveDisplayName = async () => {
+    if (!user || displayName === (profile?.full_name || "")) return;
+    await supabase.from("profiles").update({ full_name: displayName }).eq("id", user.id);
+    await refreshProfile();
+    toast.success(t("save_success") as string);
+  };
+
   const saveSettings = async () => {
     if (!user) return;
     await supabase.from("cycle_settings").upsert(
       { user_id: user.id, cycle_length: cycleLength, period_length: periodLength, last_period_start: lastPeriod || null },
       { onConflict: "user_id" }
     );
-    if (displayName !== profile?.full_name) {
-      await supabase.from("profiles").update({ full_name: displayName }).eq("id", user.id);
-    }
     toast.success(t("save_success") as string);
   };
 
@@ -126,9 +130,13 @@ export default function SettingsPage() {
 
         {/* Profile */}
         <Section title={t("profile") as string}>
-          <div className="flex items-center gap-3 mb-3">
-            {profile?.avatar_url && (
+          <div className="flex items-center gap-3">
+            {profile?.avatar_url ? (
               <img src={profile.avatar_url} alt="" className="h-12 w-12 rounded-full object-cover" />
+            ) : (
+              <div className="h-12 w-12 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-bold text-lg">
+                {displayName?.[0]?.toUpperCase() || "?"}
+              </div>
             )}
             <input
               value={displayName}
@@ -137,6 +145,14 @@ export default function SettingsPage() {
               placeholder={t("name_placeholder") as string}
             />
           </div>
+          {displayName !== (profile?.full_name || "") && (
+            <button
+              onClick={saveDisplayName}
+              className="mt-3 w-full rounded-2xl bg-primary/90 py-2.5 text-primary-foreground text-sm font-body font-semibold"
+            >
+              {t("save")}
+            </button>
+          )}
         </Section>
 
         {/* Cycle Setup */}
