@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { useLanguage } from "@/hooks/useLanguage";
 import MobileLayout from "@/components/MobileLayout";
 import { PartnerBottomNav } from "@/components/BottomNav";
 import PhaseChip from "@/components/PhaseChip";
@@ -9,14 +10,15 @@ import {
   format, startOfMonth, endOfMonth, startOfWeek, endOfWeek,
   addDays, addMonths, subMonths, isSameDay, isSameMonth, isToday,
 } from "date-fns";
-import { ko } from "date-fns/locale";
+import { ko as koLocale } from "date-fns/locale";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function PartnerCalendar() {
   const { ownerId } = useParams<{ ownerId: string }>();
+  const { t, lang } = useLanguage();
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [settings, setSettings] = useState<any>(null);
-  const [selectedDay, setSelectedDay] = useState<Date | null>(null);
+  const [selectedDay, setSelectedDay] = useState<Date | null>(new Date());
 
   useEffect(() => {
     if (!ownerId) return;
@@ -34,6 +36,7 @@ export default function PartnerCalendar() {
     );
   }
 
+  const weekdays = t("weekdays") as string[];
   const lastPeriod = new Date(settings.last_period_start);
   const monthStart = startOfMonth(currentMonth);
   const monthEnd = endOfMonth(currentMonth);
@@ -50,6 +53,14 @@ export default function PartnerCalendar() {
 
   const phases: Phase[] = ["menstruation", "follicular", "ovulation", "luteal"];
 
+  const monthLabel = lang === "ko"
+    ? format(currentMonth, "yyyy년 M월", { locale: koLocale })
+    : lang === "ru"
+    ? format(currentMonth, "LLLL yyyy")
+    : format(currentMonth, "MMMM yyyy");
+
+  const getAdvice = (phase: Phase) => t(`partner_day_${phase}` as any) as string[];
+
   return (
     <MobileLayout>
       <div className="pb-24 px-5 pt-8">
@@ -62,7 +73,7 @@ export default function PartnerCalendar() {
             <ChevronLeft className="h-5 w-5 text-foreground" />
           </button>
           <h2 className="text-lg font-display font-bold text-foreground">
-            {format(currentMonth, "yyyy년 M월", { locale: ko })}
+            {monthLabel}
           </h2>
           <button onClick={() => setCurrentMonth(addMonths(currentMonth, 1))} className="p-1 rounded-full hover:bg-mist">
             <ChevronRight className="h-5 w-5 text-foreground" />
@@ -70,7 +81,7 @@ export default function PartnerCalendar() {
         </div>
 
         <div className="grid grid-cols-7 text-center mb-2">
-          {["일", "월", "화", "수", "목", "금", "토"].map((w) => (
+          {weekdays.map((w) => (
             <span key={w} className="text-xs text-muted-foreground font-body">{w}</span>
           ))}
         </div>
@@ -96,15 +107,15 @@ export default function PartnerCalendar() {
         </div>
 
         {selectedDay && selectedPhase && (
-          <div className="mt-4 rounded-2xl bg-card p-5 shadow-soft">
+          <div className="mt-4 rounded-2xl bg-card p-5 shadow-soft animate-in slide-in-from-bottom-2">
             <div className="flex items-center gap-2 mb-2">
               <PhaseChip phase={selectedPhase.phase} size="md" />
               <span className="text-sm text-muted-foreground font-body">
-                {format(selectedDay, "M월 d일")} · {selectedPhase.cycleDay}일차
+                {lang === "ko" ? format(selectedDay, "M월 d일") : format(selectedDay, "MMM d")} · {selectedPhase.cycleDay}
               </span>
             </div>
             <div className="mt-3 space-y-2">
-              {getPartnerDayAdvice(selectedPhase.phase).map((tip, i) => (
+              {getAdvice(selectedPhase.phase).map((tip, i) => (
                 <p key={i} className="text-sm text-foreground font-body flex items-start gap-2">
                   <span>💬</span> {tip}
                 </p>
@@ -114,20 +125,10 @@ export default function PartnerCalendar() {
         )}
 
         <p className="text-xs text-muted-foreground font-body text-center mt-4">
-          📌 일기는 본인만 볼 수 있어요
+          {t("diary_private_note")}
         </p>
       </div>
       {ownerId && <PartnerBottomNav ownerId={ownerId} />}
     </MobileLayout>
   );
-}
-
-function getPartnerDayAdvice(phase: Phase): string[] {
-  const tips: Record<Phase, string[]> = {
-    menstruation: ["편안한 저녁을 제안하세요", "따뜻한 음료를 준비해 주세요"],
-    follicular: ["활발한 활동을 함께 계획하세요", "새로운 곳에 데이트를 가 보세요"],
-    ovulation: ["함께 활발한 활동을 즐기세요", "특별한 시간을 만들어 보세요"],
-    luteal: ["편안한 분위기를 만들어 주세요", "영양가 있는 간식을 준비하세요"],
-  };
-  return tips[phase];
 }
