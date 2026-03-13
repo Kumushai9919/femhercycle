@@ -9,10 +9,6 @@ export const LANG_LABELS: Record<Lang, string> = {
 export type Translations = {
   [key: string]: string | string[] | string[][];
 };
-  ko: "한국어",
-  en: "English",
-  ru: "Русский",
-};
 
 const ko = {
   // Landing
