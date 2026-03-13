@@ -91,7 +91,7 @@ export default function Dashboard() {
         <div className="bg-gradient-to-br from-lavender via-blush to-secondary px-6 pt-12 pb-8 rounded-b-[2rem]">
           <p className="text-sm font-body text-charcoal/70">{dateStr}</p>
           <h1 className="mt-1 text-2xl font-display font-bold text-charcoal">
-            {greeting}, {profile?.full_name?.split(" ")[0] || "✦"} ✦
+            {greeting}, {profile?.full_name?.split(" ")[0] || "✦"}{lang === "ko" ? "님" : ""} ✦
           </h1>
 
           <div className="mt-5 rounded-2xl bg-card/90 backdrop-blur-sm p-5 shadow-soft">
