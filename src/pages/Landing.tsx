@@ -10,7 +10,6 @@ export default function Landing() {
   useEffect(() => {
     if (!loading && user && profile) {
       if (profile.role === "partner") {
-        // find owner
         import("@/integrations/supabase/client").then(({ supabase }) => {
           supabase
             .from("partner_access")
@@ -41,15 +40,14 @@ export default function Landing() {
 
   return (
     <MobileLayout>
-      <div className="flex min-h-screen flex-col items-center justify-center px-8 bg-gradient-to-b from-blush via-mist to-lavender">
-        <div className="flex flex-col items-center gap-6 text-center">
-          <span className="text-6xl">🌸</span>
+      <div className="flex min-h-screen flex-col items-center justify-center px-8 bg-gradient-to-b from-background via-secondary/30 to-muted">
+        <div className="flex flex-col items-center gap-8 text-center">
           <h1 className="text-5xl font-display font-semibold tracking-tight">
             <span className="bg-gradient-to-r from-primary via-accent to-rose bg-clip-text text-transparent">
               HerCycle
             </span>
           </h1>
-          <p className="text-lg font-body text-muted-foreground max-w-[280px]">
+          <p className="text-base font-body text-muted-foreground max-w-[260px] leading-relaxed">
             나의 사이클을 이해하고,
             <br />
             서로 응원하세요.
@@ -57,7 +55,7 @@ export default function Landing() {
 
           <button
             onClick={() => signInWithGoogle()}
-            className="mt-4 flex items-center gap-3 rounded-2xl bg-gradient-to-r from-plum to-deep-rose px-8 py-3.5 text-accent-foreground font-body font-semibold shadow-glow transition-transform hover:scale-[1.02] active:scale-[0.98]"
+            className="mt-2 flex items-center gap-3 rounded-xl bg-white border border-border px-8 py-3 text-foreground font-body font-medium shadow-sm transition-all hover:shadow-md hover:bg-muted/50 active:scale-[0.98]"
           >
             <svg className="h-5 w-5" viewBox="0 0 24 24">
               <path
@@ -79,21 +77,6 @@ export default function Landing() {
             </svg>
             구글로 계속하기
           </button>
-
-          <div className="mt-8 flex items-center gap-6 text-sm text-muted-foreground">
-            <span className="flex flex-col items-center gap-1">
-              <span className="text-2xl">🌸</span>
-              추적
-            </span>
-            <span className="flex flex-col items-center gap-1">
-              <span className="text-2xl">📅</span>
-              이해
-            </span>
-            <span className="flex flex-col items-center gap-1">
-              <span className="text-2xl">💑</span>
-              공유
-            </span>
-          </div>
         </div>
       </div>
     </MobileLayout>
