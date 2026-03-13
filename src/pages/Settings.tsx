@@ -53,15 +53,19 @@ export default function SettingsPage() {
     }
   };
 
+  const saveDisplayName = async () => {
+    if (!user || displayName === (profile?.full_name || "")) return;
+    await supabase.from("profiles").update({ full_name: displayName }).eq("id", user.id);
+    await refreshProfile();
+    toast.success(t("save_success") as string);
+  };
+
   const saveSettings = async () => {
     if (!user) return;
     await supabase.from("cycle_settings").upsert(
       { user_id: user.id, cycle_length: cycleLength, period_length: periodLength, last_period_start: lastPeriod || null },
       { onConflict: "user_id" }
     );
-    if (displayName !== profile?.full_name) {
-      await supabase.from("profiles").update({ full_name: displayName }).eq("id", user.id);
-    }
     toast.success(t("save_success") as string);
   };
 
