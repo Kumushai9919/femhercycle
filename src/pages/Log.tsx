@@ -180,14 +180,26 @@ export default function LogPage() {
               {recentLogs.map((log) => {
                 const moodE = MOODS.find((m) => m.value === log.mood)?.emoji || "—";
                 return (
-                  <div key={log.id} className="rounded-2xl bg-card p-3 shadow-soft flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <span className="text-xl">{moodE}</span>
-                      <span className="text-sm font-body text-foreground">{log.log_date}</span>
+                  <div key={log.id} className="rounded-2xl bg-card p-3 shadow-soft space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <span className="text-xl">{moodE}</span>
+                        <span className="text-sm font-body text-foreground">{log.log_date}</span>
+                      </div>
+                      <span className="text-xs text-muted-foreground font-body">
+                        {t("energy")} {log.energy_level ?? "—"}%
+                      </span>
                     </div>
-                    <span className="text-xs text-muted-foreground font-body">
-                      {t("energy")} {log.energy_level ?? "—"}%
-                    </span>
+                    {log.symptoms && log.symptoms.length > 0 && (
+                      <div className="flex flex-wrap gap-1 pl-9">
+                        {log.symptoms.map((s: string) => (
+                          <span key={s} className="rounded-full bg-mist px-2 py-0.5 text-[10px] font-body text-muted-foreground">{s}</span>
+                        ))}
+                      </div>
+                    )}
+                    {log.note && (
+                      <p className="text-xs font-display italic text-muted-foreground pl-9 line-clamp-2">{log.note}</p>
+                    )}
                   </div>
                 );
               })}
