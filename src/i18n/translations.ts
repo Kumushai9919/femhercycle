@@ -6,6 +6,14 @@ export const LANG_LABELS: Record<Lang, string> = {
   ru: "Русский",
 };
 
+export type Translations = {
+  [key: string]: string | string[] | string[][];
+};
+  ko: "한국어",
+  en: "English",
+  ru: "Русский",
+};
+
 const ko = {
   // Landing
   landing_tagline: "나의 사이클을 이해하고,\n서로 응원하세요.",
